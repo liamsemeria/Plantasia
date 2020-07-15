@@ -4,5 +4,6 @@
 int main()
 {
     Interpreter p("source.txt");
+    p.parse();
     p.interpret();
 }

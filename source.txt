@@ -1,6 +1,11 @@
-Seed rose 3
-Seed tulip 2
+Seed rose 10
+Seed tulip 3
+Seed peppers 4
 Plant rose
+Water peppers
 Propigate tulip
+Examine peppers
+Finish
 Dig into rose
 Examine rose
+Examine peppers
