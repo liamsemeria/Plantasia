@@ -9,17 +9,45 @@ Interpreter::Interpreter(std::string file)
 void Interpreter::parse()
 {
     std::ifstream iFile;
+    bool hasTab = false;
     iFile.open(fileName);
     std::string line;
     std::string token;
     std::vector<std::string> parsedLine;
     while(getline(iFile,line))
     {
-        std::stringstream s(line);
-        while (getline(s,token,' '))
+        //std::stringstream s(line);
+        // for indent (get rid of beginning spaces)
+        for (int i = 0; i < line.length(); i++)
         {
-            parsedLine.push_back(token);
+            if (line[i] != ' ')
+            {
+                line = line.substr(i);
+                break;
+            }
+            hasTab = true;
         }
+        if (hasTab)
+        {
+            parsedLine.push_back("TAB");
+            hasTab = false;
+        }
+        // for code
+        for (auto &ch : line)
+        {
+            if (ch == ' ')
+            {
+                parsedLine.push_back(token);
+                //std::cout << token << std::endl;
+                token = "";
+            } else 
+            {
+                token+=ch;
+            }
+        }
+        parsedLine.push_back(token);
+        //std::cout << token << std::endl;
+        token = "";
         code.push_back(parsedLine);
         parsedLine.clear();
     }
@@ -32,23 +60,50 @@ void Interpreter::interpret()
     iFile.open(fileName);
     std::string line;
     // current index in code
-    int i, j = 0;
+    int i = 0;
+    int j = 0;
     // for loops
     int loopStart = 0;
     bool looping = false;
     std::string looperName;
-
     std::string token;
     std::string temp;
     while(i < code.size())
     {
-        std::stringstream s(line);
+        //std::stringstream s(line);
         while (j < code[i].size())
         {
             token = code[i][j];
-
             // comments
             if (token == "//") break;
+            if (token == "TAB")
+            {
+                j++;
+            }
+            // the start of a loop
+            if (token == "Water")
+            {
+                // next token is the loop length
+                j++;
+                token = code[i][j];
+                looperName = token; // store the name of token
+                loopStart = i;
+                break;
+            }
+            // loop end
+            //if (token == "Finish")
+            if (i > 0)
+                    if ((code[i-1][0]=="TAB")&&(code[i][0]!="TAB"))
+            {
+                variables.find(looperName)->second--;
+                if (variables.find(looperName)->second > 0)
+                {
+                    i = loopStart;
+                    j = 0;
+                    break;
+                }
+            }
+
             // initializing a variable
             if (token == "Seed")
             {
@@ -107,27 +162,6 @@ void Interpreter::interpret()
                 }
                 break;
             }
-            // the start of a loop
-            if (token == "Water")
-            {
-                // next token is the loop length
-                j++;
-                token = code[i][j];
-                looperName = token; // store the name of token
-                loopStart = i;
-                break;
-            }
-            // loop end
-            if (token == "Finish")
-            {
-                variables.find(looperName)->second--;
-                if (variables.find(looperName)->second > 0)
-                {
-                    i = loopStart;
-                }
-                break;
-            }
-
 
             // print
             if (token == "Examine")
@@ -137,6 +171,14 @@ void Interpreter::interpret()
                 std::cout << variables.find(token)->second << std::endl;
                 break;
             }
+            // detect errors
+            if (token != "TAB")
+            {
+                std::cout << "syntax error" << std::endl;
+                j++;
+                token = code[i][j];
+                break;
+            }
         }
         i++;
         j=0;
@@ -144,9 +186,16 @@ void Interpreter::interpret()
 }
 // helper functions
 
-void Interpreter::gardenToString()
+void Interpreter::printCode()
 {
-    std::string s;
+    for (int i = 0; i < code.size(); i++)
+    {
+        for (int j = 0; j < code[i].size(); j++)
+        {
+            std::cout << code[i][j] << ' ';
+        }
+        std::cout << std::endl;
+    }
 }
 // add or subtract plant to garden and push the value
 void Interpreter::pushChangedValue(std::string s, int sign)

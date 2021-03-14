@@ -1,11 +1,10 @@
-Seed rose 10
-Seed tulip 3
-Seed peppers 4
-Plant rose
-Water peppers
-Propigate tulip
-Examine peppers
-Finish
+Seed rose 8
+Seed violet 3
+Seed tulip 1
+Seed fib 0
+Seed mom 8
+Plant fib
+Water rose
+    Propigate tulip
 Dig into rose
 Examine rose
-Examine peppers

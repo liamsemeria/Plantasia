@@ -10,7 +10,7 @@ class Interpreter
     // gardens are stacks of variables
     std::stack<int> garden;
     // all of the code from file put int 2d vector
-    std::vector<std::vector<std::string>> code;
+    std::vector<std::vector<std::string> > code;
 
     // map for variables
     std::map<std::string, int> variables;
@@ -26,9 +26,10 @@ class Interpreter
     // interpret and execute the code
     void interpret();
 
+    void printCode();
     private:
     // helper functions
-    void gardenToString();
+    //void printCode();
     // add or subtract plant to garden and push the value
     void pushChangedValue(std::string s, int sign);
 
