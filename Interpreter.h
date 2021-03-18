@@ -4,13 +4,21 @@
 #include <stack>
 #include <vector>
 #include <map>
-// parse the file, while adding new variables and shit
+// node to construct flow graph
+struct node
+{
+    std::vector<std::string> expression;
+    node* next = NULL;
+    node* jump = NULL;
+};
+// parse the file, while adding new variables and stuff
 class Interpreter
 {
+    // first node of the flow graph
+    node* head;
+
     // gardens are stacks of variables
     std::stack<int> garden;
-    // all of the code from file put int 2d vector
-    std::vector<std::vector<std::string> > code;
 
     // map for variables
     std::map<std::string, int> variables;
@@ -21,8 +29,9 @@ class Interpreter
 
     Interpreter(std::string file);
 
-    // parse the file
-    void parse();
+    // convert file imto nodes
+    void lex();
+    // convert tokens into a FlowGraph
     // interpret and execute the code
     void interpret();
 

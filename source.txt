@@ -1,10 +1,14 @@
-Seed rose 8
-Seed violet 3
-Seed tulip 1
-Seed fib 0
-Seed mom 8
-Plant fib
-Water rose
-    Propigate tulip
-Dig into rose
-Examine rose
+// fibinocci
+Seed digits 3
+Seed c 1
+Seed t 3
+Seed spike 3
+Plant spike
+Wither digits
+        Wither t
+            Examine t
+        End
+        Plant spike
+        Dig into t
+    End
+Examine c
