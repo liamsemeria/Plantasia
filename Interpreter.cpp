@@ -67,11 +67,12 @@ void Interpreter::lex()
         }
         else 
         {
+            
             //make nodes and wire them to the previous line
             prev->next = new node();
             prev->next->expression = parsedLine;
             // wither end statement
-            if (prev->expression[0] == "End")
+            if (prev->expression[0] == "end")
             {
                 // set condition jump to end of condition
                 withers.top()->jump = prev->next;
@@ -80,14 +81,23 @@ void Interpreter::lex()
                 prev->jump = withers.top();
                 withers.pop();
             }
+            
             prev = prev->next;
             // for wither statement start condition
-            if (prev->expression[0] == "Wither") withers.push(prev);
+            if (prev->expression[0] == "wither") withers.push(prev);
         }
         parsedLine.clear();
         k++;
     }
-    // set the last nodes next to null
+    // set the last nodes next to a end of file token
+    if (prev->expression[0] == "end")
+    {
+        // set condition jump to end of condition
+        withers.top()->jump = NULL;
+        // set end of condition jump to start
+        prev->jump = withers.top();
+        withers.pop();
+    }
     prev->next = NULL;
 }
 
@@ -108,7 +118,7 @@ void Interpreter::interpret()
     std::string temp;
     // graph traversal
     node* n = head;
-    while(n != NULL)
+    while (n != NULL)
     {
         //std::stringstream s(line);
         while (j < n->expression.size())
@@ -126,7 +136,7 @@ void Interpreter::interpret()
                 j++;
             }
             // the start of a loop
-            if (token == "Wither")
+            if (token == "wither")
             {
                 // next token is the loop length
                 j++;
@@ -145,7 +155,7 @@ void Interpreter::interpret()
                 break;
             }
             // loop end
-            if (token == "End")
+            if (token == "end")
             //if (i > 0)
             //        if ((code[i-1][0]=="TAB")&&(code[i][0]!="TAB"))
             {
@@ -155,7 +165,7 @@ void Interpreter::interpret()
             }
 
             // initializing a variable
-            if (token == "Seed")
+            if (token == "seed")
             {
                 // get the name
                 j++;
@@ -170,7 +180,7 @@ void Interpreter::interpret()
                 break;
             }
             // add to stack
-            if (token == "Plant")
+            if (token == "plant")
             {
                 // get the name
                 j++;
@@ -180,7 +190,7 @@ void Interpreter::interpret()
                 break;
             }
             // add var to top value and push new value
-            if (token == "Propagate")
+            if (token == "propagate")
             {
                 // get the name
                 j++;
@@ -189,18 +199,8 @@ void Interpreter::interpret()
                 n = n->next;
                 break;
             }
-            // subtract var to top value and push new value
-            if (token == "Trim")
-            {
-                // get the name
-                j++;
-                token = n->expression[j];
-                pushChangedValue(token,-1);
-                n = n->next;
-                break;
-            }
             // pop from stack
-            if (token == "Dig")
+            if (token == "dig")
             {
                 int num = garden.top();
                 garden.pop();
@@ -219,7 +219,7 @@ void Interpreter::interpret()
             }
 
             // print
-            if (token == "Examine")
+            if (token == "examine")
             {
                 j++;
                 token = n->expression[j];
@@ -260,6 +260,11 @@ void Interpreter::printCode()
 void Interpreter::pushChangedValue(std::string s, int sign)
 {
     int n = 0;
+    if (s == "")
+    {
+        garden.push(garden.top());
+        return;
+    }
     // search for the variable added
     n = variables.find(s)->second;
     // add or subtract the values and push the new value to the garden

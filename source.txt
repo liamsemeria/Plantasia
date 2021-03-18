@@ -1,14 +1,10 @@
 // fibinocci
-Seed digits 3
-Seed c 1
-Seed t 3
-Seed spike 3
-Plant spike
-Wither digits
-        Wither t
-            Examine t
-        End
-        Plant spike
-        Dig into t
-    End
-Examine c
+seed digits 3
+seed c 1
+seed t 3
+seed spike 3
+plant digits
+wither c
+    plant c
+dig into spike
+examine spike
