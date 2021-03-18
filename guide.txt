@@ -1,0 +1,67 @@
+Plantasia is a basic computational language based on planting variables into the garden (a stack)
+
+SYNTAX AND VOCABULARY
+seed: (plant name) (plant int value)
+    creates variable
+    ex:
+        seed rose 3
+plant: (plant name)
+    pushes plant onto garden
+    ex:
+        plant rose
+propagate: (plant name)
+    pushes top of garden + plant value
+    if no plant it copies top
+    ex:
+        propagate
+        or
+        propagate rose
+
+dig:
+    pops plant from garden
+    into (plant name) puts the popped value into the plant
+    ex:
+        dig into rose
+        or
+        dig
+
+examine: (plant name)
+    prints the plants value
+    ex:
+        examine rose
+
+wither: (plant name)
+    decrements plant until 0 and executes block untill end statement each iteration
+    if the plant is 0 the block doesnt executes
+    ex:
+        wither rose
+            examine rose
+        end
+
+EXAMPLES
+
+// calculates n * m
+seed n 4
+seed m 4
+seed v 0
+plant v
+wither n
+    propagate m
+end
+dig into v
+examine v
+
+// prints n first fibinocci sequence numbers
+seed n 6
+seed f0 0
+seed f1 1
+seed temp 0
+plant f0
+plant f1
+wither n
+    dig into f1
+    dig into f0
+    examine f0
+    plant f1
+    propagate f0
+end

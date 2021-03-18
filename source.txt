@@ -1,10 +1,1 @@
-// fibinocci
-seed digits 3
-seed c 1
-seed t 3
-seed spike 3
-plant digits
-wither c
-    plant c
-dig into spike
-examine spike
+// compile with g++ -std=c++11 main.cpp Interpreter.cpp -o plantasia
