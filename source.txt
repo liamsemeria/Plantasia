@@ -1,1 +1,40 @@
-// compile with g++ -std=c++11 main.cpp Interpreter.cpp -o plantasia
+// compile with g++ -std=c++20 main.cpp Interpreter.cpp -o plantasia
+
+// attempt at tail recursion
+gardener frank
+    // n
+    propagate
+    // i (i is a copyofn < 0??)
+    propagate < 1
+    dig into i
+    dig into n
+    dig
+    // r (r is the result 2nd input)
+    propagate
+    dig into r
+    plant n
+    // the wither statement is goofin it by decrementing 0
+    wither i
+        plant r
+        finish
+    dead
+        // calculate new r = n * r
+        propagate * r
+        dig into r
+        // calculate new n = n - 1
+        propagate - 1
+        dig into n
+        plant r
+        plant n
+        frank
+        finish
+    end
+finish
+
+seed n 4
+seed r 1
+seed i
+plant r
+plant n
+frank
+examine garden

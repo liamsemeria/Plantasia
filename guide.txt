@@ -1,21 +1,25 @@
 Plantasia is a basic computational language based on planting variables into the garden (a stack)
 
 SYNTAX AND VOCABULARY
-seed: (plant name) (plant int value)
+seed:
     creates variable
     ex:
         seed rose 3
-plant: (plant name)
-    pushes plant onto garden
+	seed daisy
+
+plant:
+    pushes plant or value into garden
     ex:
         plant rose
-propagate: (plant name)
-    pushes top of garden + plant value
-    if no plant it copies top
+	plant 3
+
+propagate:
+    extends the top of the garden by creating a copy of it
+	you can also modify the copy with +,-,*,/,% and a variable
     ex:
         propagate
         or
-        propagate rose
+        propagate * rose
 
 dig:
     pops plant from garden
@@ -26,7 +30,8 @@ dig:
         dig
 
 examine: (plant name)
-    prints the plants value
+    prints a plants value
+    if given the word “garden” it peeks at the plant at the top of the garden
     ex:
         examine rose
 
@@ -38,18 +43,15 @@ wither: (plant name)
             examine rose
         end
 
-EXAMPLES
+gardener: gardeners follow a set of instructions to work on the garden
+	the gardeners perform their instructions everytime their name is called
+	ex:
+	gardener look
+	    examine garden
+	finish
+	note: gardeners can be recursive but given all stackframes share the same garden only tail recursion works
 
-// calculates n * m
-seed n 4
-seed m 4
-seed v 0
-plant v
-wither n
-    propagate m
-end
-dig into v
-examine v
+EXAMPLES
 
 // prints n first fibinocci sequence numbers
 seed n 6
@@ -63,5 +65,77 @@ wither n
     dig into f0
     examine f0
     plant f1
-    propagate f0
+    propagate + f0
 end
+
+// nested for loop
+seed i 3
+plant i
+seed j 3
+wither j
+    propagate
+    dig into i
+    wither i
+        examine i
+    end
+end
+
+// gardener that cubes the top of the stack
+gardener cube
+    seed n
+    dig into n
+    plant n
+    propagate
+    seed i 3
+    wither i
+        propagate * n
+    end
+    dig
+    examine garden
+finish
+
+plant 3
+cube
+examine garden
+
+// tail recursive gardener for factorial of n
+
+gardener frank
+    // n
+    propagate
+    // i (i is a copyofn < 0??)
+    propagate < 1
+    dig into i
+    dig into n
+    dig
+    // r (r is the result 2nd input)
+    propagate
+    dig into r
+    plant n
+    // the wither statement is goofin it by decrementing 0
+    wither i
+        plant r
+        finish
+    dead
+        // calculate new r = n * r
+        propagate * r
+        dig into r
+        // calculate new n = n - 1
+        propagate - 1
+        dig into n
+        plant r
+        plant n
+        frank
+        finish
+    end
+finish
+
+seed n 4
+seed r 1
+seed i
+plant r
+plant n
+frank
+examine garden
+
+

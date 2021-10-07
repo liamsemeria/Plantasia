@@ -22,6 +22,9 @@ class Interpreter
 
     // map for variables
     std::map<std::string, int> variables;
+    
+    // map for functions
+    std::map<std::string, node*> functions;
 
     // source code file
     std::string fileName;
@@ -40,6 +43,6 @@ class Interpreter
     // helper functions
     //void printCode();
     // add or subtract plant to garden and push the value
-    void pushChangedValue(std::string s, int sign);
+    void pushChangedValue(std::string s, char opp);
 
 };
