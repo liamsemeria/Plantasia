@@ -1,14 +1,19 @@
 Plantasia is a basic computational language based on planting variables into the garden (a stack)
 
+GENERAL ADVICE
+the variables in PLantasia are integers, and the only way to interact with them is using the garden.
+everything in the stack frame shares one garden, so tail recursion is the way to go if you feel in the recursive mood
+
+
 SYNTAX AND VOCABULARY
 seed:
-    creates variable
+    creates a plant variable (int)
     ex:
         seed rose 3
 	seed daisy
 
 plant:
-    pushes plant or value into garden
+    pushes plant or value into garden (stack)
     ex:
         plant rose
 	plant 3
@@ -31,25 +36,35 @@ dig:
 
 examine: (plant name)
     prints a plants value
-    if given the word “garden” it peeks at the plant at the top of the garden
+    if given the word “garden” it prints the plant at the top of the garden
     ex:
         examine rose
 
 wither: (plant name)
     decrements plant until 0 and executes block untill end statement each iteration
-    if the plant is 0 the block doesnt executes
+    if the plant is 0 the block doesnt execute
     ex:
         wither rose
             examine rose
         end
+dead:
+    within a wither statement, the section under dead will only execute when the plant being withered is zero
+    in practice, you can use wither and dead as an if else statement (be mindfull of decrement)
+    ex:
+    	wither b
+	   examine t
+	dead
+	   examine f
+	end
+   (if b is 2 we get t and if b is 1 we get f)
 
 gardener: gardeners follow a set of instructions to work on the garden
-	the gardeners perform their instructions everytime their name is called
-	ex:
-	gardener look
-	    examine garden
+    the gardeners perform their instructions everytime their name is called
+    ex:
+        gardener look
+    	    examine garden
 	finish
-	note: gardeners can be recursive but given all stackframes share the same garden only tail recursion works
+    note: again, gardeners can be recursive but given all stackframes share the same garden only tail recursion works
 
 EXAMPLES
 
