@@ -253,8 +253,32 @@ void Interpreter::interpret()
             {
                 j++;
                 token = n->expression[j];
-                if (token == "garden") std::cout << garden.top() << std::endl;
-                else std::cout << variables.find(token)->second << std::endl;
+		        bool format = 0;
+		        // print as char if @ is before val
+		        if (token == "@") 
+		        {
+		            format = 1;
+		            j++;
+		            token = n->expression[j];
+		        }
+                if (format)
+                {
+                    if (token == "garden") printf("%c",garden.top());//std::cout << garden.top() << std::endl;
+                    else printf("%c",variables.find(token)->second);
+                } else {
+                    if (token == "garden") printf("%d",garden.top());//std::cout << garden.top() << std::endl;
+                    else printf("%d",variables.find(token)->second);//std::cout << variables.find(token)->second << std::endl;
+                }
+                n = n->next;
+                break;
+            }
+            if (token == "absorb")
+            {
+                if (inputnum < inputs.size())
+                {
+                    garden.push(inputs[inputnum]);
+                    inputnum++;
+                }
                 n = n->next;
                 break;
             }

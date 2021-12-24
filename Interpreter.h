@@ -29,7 +29,9 @@ class Interpreter
     // source code file
     std::string fileName;
     public:
-
+    // inputs
+    std::vector<int> inputs;
+    int inputnum = 0;
     Interpreter(std::string file);
 
     // convert file imto nodes
